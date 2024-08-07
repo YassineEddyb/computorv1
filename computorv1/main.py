@@ -1,23 +1,33 @@
 import sys
-import re
+from parser import EquationParser 
 
-# get the polinomial equation from the arguments
-equations = sys.argv[1].split(" = ")
+def print_reduced_form(equation):
+    print("Reduced form: ", end = " ")
+    for (idx, term) in enumerate(equation):
+        if (term == 0):
+            continue
 
-# get the two equation seperated by =
-equations_1 = equations[0]
-equations_2 = equations[1]
+        if (idx < len(equation) and idx > 0):
+            sign = " + "
+            if (term < 0):
+                sign = ' - '
+                term *= -1
 
-# split the terms with + and -
-equation_1_terms = re.split(" - | \+ ", equations_1)
-equation_2_terms = re.split(" - | \+ ", equations_2)
+            print(sign, end = "");
 
-# print the terms
-print(equation_1_terms)
-print(equation_2_terms)
+        print ("{} * X^{}".format(term, idx), end ="")
+        
 
-# the approach is not very efficient becuase you need to simplify the equation 
-# and you should  take into acount the signs separating the terms my toughts 
-# is to split terms while keeping the signs so you can simplify the equation
-# and the create two classes one to solve the second degree and one to solve
-# the first degree.
+    print(" = 0")
+        
+
+
+if __name__ == "__main__":
+    # get the polinomial equation from the arguments
+    equations = sys.argv[1].split(" = ")
+
+    # get the two equation seperated by =
+    p = EquationParser(equations);
+    equation = p.parseEquation()
+
+    print_reduced_form(equation);
