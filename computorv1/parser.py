@@ -6,7 +6,8 @@ class EquationParser:
         self.equation_2 = equations[1]
         self.equation_1_terms = []
         self.equation_2_terms = []
-        self.combined_equation = [0,0,0]
+        self.combined_equation = []
+        self.polynomial_degree = 0
         
 
     def parseEquation(self):
@@ -16,15 +17,29 @@ class EquationParser:
         self.equation_1_terms = self.simplify_equation(self.equation_1_terms)
         self.equation_2_terms = self.simplify_equation(self.equation_2_terms)
 
-        self.combine_the_two_equations();
+        self.combine_the_two_equations()
         
-        return self.combined_equation;
+        return self.combined_equation
+    
+    def get_polinomail_degree(self):
+        return self.polynomial_degree
 
         
     def combine_the_two_equations(self):
-        for i in range (0, 3):
-            self.combined_equation[i] = self.equation_1_terms[i] + -1 * self.equation_2_terms[i]
+        if len(self.equation_1_terms) < len(self.equation_2_terms):
+            size = len(self.equation_1_terms)
+        else:
+            size = len(self.equation_2_terms)
             
+        for i in range(0, size):
+            self.combined_equation.append(self.equation_1_terms[i] + -1 * self.equation_2_terms[i])
+
+        while size < len(self.equation_1_terms):
+            self.combined_equation.append(self.equation_1_terms[size]) 
+            size += 1
+        while size < len(self.equation_2_terms):
+            self.combined_equation.append(self.equation_2_terms[size] * -1) 
+            size += 1
         
         
     def format_equation_to_have_pluses(self, equation):
@@ -37,16 +52,17 @@ class EquationParser:
         return " + ".join(terms).split(" + ")
     
     def simplify_equation(self, terms):
-        simplified_terms = [0,0,0]
+        simplified_terms = [0.0] * 3
         for term in terms:
-            if term.find("X^0") != -1:
-                simplified_terms[0] += float(term.split(" * ")[0])
-            elif term.find("X^1") != -1:
-                simplified_terms[1] += float(term.split(" * ")[0])
-            elif term.find("X^2") != -1:
-                simplified_terms[2] += float(term.split(" * ")[0])
-            else:
-                print("The polynomial degree is strictly greater than 2, I can't solve.")
+            index = int(term.split(" * ")[1].split("^")[1])
+            
+            if (index > self.polynomial_degree):
+                self.polynomial_degree = index
+            
+            if len(simplified_terms) <= index:
+                simplified_terms.extend([0.0] * (index - len(simplified_terms) + 1))
+
+            simplified_terms[index] += float(term.split(" * ")[0])
 
         
         return simplified_terms
