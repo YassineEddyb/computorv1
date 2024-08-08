@@ -1,5 +1,6 @@
 import sys
 from parser import EquationParser 
+from second_degree import SecondDegreeSolver 
 
 def print_reduced_form(equation):
     print("Reduced form:", end = " ")
@@ -41,6 +42,10 @@ if __name__ == "__main__":
     
     if (p.get_polinomail_degree() > 2):
         print_cant_solve_equation()
+        exit()
+    elif (p.get_polinomail_degree() == 2):
+        p_2_solver =  SecondDegreeSolver(equation)
+        p_2_solver.solve_equation()
         
 
 # print reduced form is working but just for polinomials that are secoend degree or
