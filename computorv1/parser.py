@@ -8,6 +8,7 @@ class EquationParser:
         self.equation_2_terms = []
         self.combined_equation = []
         self.polynomial_degree = 0
+        self.var = ""
         
 
     def parseEquation(self):
@@ -54,15 +55,44 @@ class EquationParser:
     def simplify_equation(self, terms):
         simplified_terms = [0.0] * 3
         for term in terms:
-            index = int(term.split(" * ")[1].split("^")[1])
+            exponent = self.get_integer(term.split("*")[1].split("^")[1])
+            self.check_for_varaible(term.split("*")[1].split("^")[0].strip())
             
-            if (index > self.polynomial_degree):
-                self.polynomial_degree = index
+            if (exponent > self.polynomial_degree):
+                self.polynomial_degree = exponent 
             
-            if len(simplified_terms) <= index:
-                simplified_terms.extend([0.0] * (index - len(simplified_terms) + 1))
+            if len(simplified_terms) <= exponent:
+                simplified_terms.extend([0.0] * (exponent - len(simplified_terms) + 1))
 
-            simplified_terms[index] += float(term.split(" * ")[0])
+            coefficient = self.get_float(term.split("*")[0])
+            simplified_terms[exponent] += coefficient 
 
-        
         return simplified_terms
+
+    def get_integer(self, string):
+        try:
+            num = int(string)
+            return num
+        except ValueError:
+            self.print_error("exponent is not a variable")
+            exit()
+
+    def get_float(self, string):
+        try:
+            num = float(string)
+            return num
+        except ValueError:
+            self.print_error("coefficient is not valid")
+            exit()
+
+    def check_for_varaible(self, string):
+        if self.var == "":
+            self.var = string
+        elif self.var != string:
+            self.print_error("variable don't match")
+            exit()
+        
+
+    def print_error(self, error_message):
+        print("Syntax Error:", error_message)
+        

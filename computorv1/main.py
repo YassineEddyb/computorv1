@@ -2,6 +2,7 @@ import sys
 from parser import EquationParser 
 from second_degree import SecondDegreeSolver 
 
+# TODO: don't print the last term if it's zero
 def print_reduced_form(equation):
     print("Reduced form:", end = " ")
     for (idx, term) in enumerate(equation):
@@ -31,7 +32,7 @@ def print_cant_solve_equation():
 
 if __name__ == "__main__":
     # get the polinomial equation from the arguments
-    equations = sys.argv[1].split(" = ")
+    equations = sys.argv[1].split("=")
 
     # get the two equation seperated by =
     p = EquationParser(equations)
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         p_2_solver =  SecondDegreeSolver(equation)
         p_2_solver.solve_equation()
         
-
+        
 # print reduced form is working but just for polinomials that are secoend degree or
 # lower my thoughts is that I need to change simplify_equation to work with any polinomial
 # by parssing X^Index and put it the simplified_terms[index]

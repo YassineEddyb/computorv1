@@ -8,18 +8,20 @@ class SecondDegreeSolver:
         self.delta = (self.b * self.b) - (4 * self.a * self.c)
     
     def solve_equation(self):
-        # print(self.a, self.b, self.c, self.delta)
         if (self.delta == 0):
-            print(self.get_one_solution())
+            self.print_solution(self.get_one_solution())
         elif (self.delta > 0):
-            solutions = self.get_two_solutions();
-            print(solutions[0], "\n", solutions[1])
+            solutions = self.get_two_solutions()
+            self.print_solution(solutions[0])
+            self.print_solution(solutions[1])
         else:
             print("No solution exist in real numbers.")
 
+    def print_solution(sefl, number):
+        print("{:.6f}".format(number))
     
     def get_one_solution(self):
-        pass
+        return (- self.b) / (2 * self.a)
 
         
     def get_two_solutions(self):
