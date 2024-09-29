@@ -96,3 +96,4 @@ class EquationParser:
     def print_error(self, error_message):
         print("Syntax Error:", error_message)
         
+
